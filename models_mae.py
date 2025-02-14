@@ -370,3 +370,45 @@ mae_vit_large_patch16 = mae_vit_large_patch16_dec512d8b  # decoder: 512 dim, 8 b
 mae_vit_huge_patch14 = mae_vit_huge_patch14_dec512d8b  # decoder: 512 dim, 8 blocks
 
 
+
+
+###########################################
+#
+#
+# Reconstruction:
+#
+#
+
+
+def mae_vit_large_patch16_reconstruct(**kwargs):
+    model = MaskedAutoencoderViT(img_size=96, in_chans=1,
+        patch_size=16, embed_dim=1024, depth=24, num_heads=16,
+        decoder_embed_dim=512, decoder_depth=8, decoder_num_heads=16,
+        mlp_ratio=4, norm_layer=partial(nn.LayerNorm, eps=1e-6), **kwargs)
+    return model
+
+
+# Create the model instance
+#model = mae_vit_large_patch16_reconstruct()
+
+# Define an input tensor with shape (1,1,96,96,96)
+#input_tensor = torch.randn(1, 1, 96, 96, 96)
+
+# Forward pass with mask_ratio=0 (no masking)
+#loss, pred, mask = model(input_tensor, mask_ratio=0)
+
+# Print output sizes
+#print(f"Input size: {input_tensor.shape}")
+#print(f"Prediction (reconstructed) size: {pred.shape}")
+#print(f"Mask size: {mask.shape}")
+
+
+# Unpatchify the reconstructed output
+#reconstructed_volume = model.unpatchify(pred)
+
+# Print the shape of the reconstructed volume
+#print(f"Reconstructed size: {reconstructed_volume.shape}")
+
+
+
+

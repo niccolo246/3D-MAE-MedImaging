@@ -58,7 +58,7 @@ def get_args_parser():
     parser.add_argument('--model', default='vit_large_patch16_yo', type=str, metavar='MODEL',
                         help='Name of model to train')
 
-    parser.add_argument('--input_size', default=256, type=int,
+    parser.add_argument('--input_size', default=96, type=int,
                         help='images input size')
 
     parser.add_argument('--drop_path', type=float, default=0, metavar='PCT',
@@ -87,7 +87,7 @@ def get_args_parser():
                         help='Label smoothing (default: 0.1)')
 
     # * Finetuning params
-    parser.add_argument('--finetune', default='required',
+    parser.add_argument('--finetune', default='required',  # requried
                         help='finetune from checkpoint')
     parser.add_argument('--global_pool', action='store_true')
     parser.set_defaults(global_pool=True)
@@ -264,6 +264,7 @@ def main(args):
     ######## ######## ######## ######## ######## ######## ######## ######## ######## ######## ######## ########
 
     model = models_vit.__dict__[args.model](
+        img_size=args.img_size,
         num_classes=args.nb_classes,
         drop_path_rate=args.drop_path,
         global_pool=args.global_pool,

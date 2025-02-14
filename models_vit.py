@@ -41,7 +41,7 @@ class VisionTransformer(timm.models.vision_transformer.VisionTransformer):
         pos_embed (nn.Parameter): Fixed (sin-cos) positional embeddings for the patches, including
             the class token.
     """
-    def __init__(self, global_pool=False, patch_size=16, embed_dim=1024, **kwargs):
+    def __init__(self, global_pool=False, patch_size=16, embed_dim=1024, img_size=256, **kwargs):
         """
         Initializes the VisionTransformer model for 3D data.
         Args:
@@ -66,7 +66,7 @@ class VisionTransformer(timm.models.vision_transformer.VisionTransformer):
 
             del self.norm  # remove the original norm
 
-        self.patch_embed = PatchEmbedThreeD(img_size=256, patch_size=patch_size, in_chans=1, embed_dim=embed_dim)  # hard coded for vit large
+        self.patch_embed = PatchEmbedThreeD(img_size=img_size, patch_size=patch_size, in_chans=1, embed_dim=embed_dim)  # hard coded for vit large
         num_patches = self.patch_embed.num_patches
 
         self.pos_embed = nn.Parameter(torch.zeros(1, num_patches + 1, embed_dim), requires_grad=False)
@@ -202,7 +202,7 @@ class VisionTransformerMod(timm.models.vision_transformer.VisionTransformer):
             del self.norm
 
         # Use the provided 3D patch embedding
-        self.patch_embed = PatchEmbedThreeD(img_size=256, patch_size=patch_size, in_chans=1, embed_dim=embed_dim)
+        self.patch_embed = PatchEmbedThreeD(img_size=img_size, patch_size=patch_size, in_chans=1, embed_dim=embed_dim)
         num_patches = self.patch_embed.num_patches
 
         self.pos_embed = nn.Parameter(torch.zeros(1, num_patches + 1, embed_dim), requires_grad=False)
@@ -307,6 +307,33 @@ def vit_large_patch16_reg(**kwargs):
         patch_size=16, embed_dim=1024, depth=24, num_heads=16, mlp_ratio=4, qkv_bias=True,
         norm_layer=partial(nn.LayerNorm, eps=1e-6), **kwargs)
     return model
+
+
+
+
+
+#################################
+#
+# Prediction example:
+#
+#
+#################################
+
+
+# Create the model instance
+#model = vit_large_patch16_yo(img_size=96, num_classes=1, global_pool=True)
+
+# Define an input tensor with shape (1,1,96,96,96)
+#input_tensor = torch.randn(1, 1, 96, 96, 96)
+
+# Forward pass
+#output = model(input_tensor)
+
+# Print output shape
+#print(f"Input size: {input_tensor.shape}")
+#print(f"Output size: {output.shape}")
+
+
 
 
 
