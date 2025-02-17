@@ -272,23 +272,18 @@ def main(args):
 
     if args.finetune and not args.eval:
         checkpoint = torch.load(args.finetune, map_location='cpu')
+        print("Load pre-trained checkpoint from: %s" % weight_path)
+        checkpoint_model = checkpoint['model'] if "model" in checkpoint.keys() else checkpoint['model_state']
 
-        print("Load pre-trained checkpoint from: %s" % args.finetune)
-        checkpoint_model = checkpoint['model']
-        state_dict = model.state_dict()
-        for k in ['head.weight', 'head.bias']:
-            if k in checkpoint_model and checkpoint_model[k].shape != state_dict[k].shape:
-                print(f"Removing key {k} from pretrained checkpoint")
-                del checkpoint_model[k]
+        if 'pos_embed' in checkpoint_model:
+            interpolate_pos_embed(model, checkpoint_model)
 
-    ######## ######## ######## ######## ######## ######## ######## ########
-        # Note interpolation shouldn't be necessary
-        # interpolate position embedding
-        interpolate_pos_embed(model, checkpoint_model)
-    ######## ######## ######## ######## ######## ######## ######## ########
+        # Filter out keys that do not match in shape
+        model_dict = model.state_dict()
+        filtered_checkpoint = {k: v for k, v in checkpoint_model.items() if k in model_dict and model_dict[k].shape == v.shape}
 
-        # load pre-trained model
-        msg = model.load_state_dict(checkpoint_model, strict=False)
+        # Load the filtered checkpoint into the model
+        msg = model.load_state_dict(filtered_checkpoint, strict=False)
         print(msg)
 
         # manually initialize fc layer

@@ -35,6 +35,9 @@ import models_mae
 
 from engine_pretrain import train_one_epoch
 
+from util.pos_embed import interpolate_pos_embed, interpolate_decoder_pos_embed
+
+
 
 def get_args_parser():
     parser = argparse.ArgumentParser('MAE pre-training', add_help=False)
@@ -50,7 +53,7 @@ def get_args_parser():
     parser.add_argument('--input_size', default=256, type=int,
                         help='images input size')
 
-    parser.add_argument('--mask_ratio', default=0, type=float,  ## no masking activated
+    parser.add_argument('--mask_ratio', default=0.75, type=float,  ## no masking activated
                         help='Masking ratio (percentage of removed patches).')
 
     parser.add_argument('--norm_pix_loss', action='store_true',
@@ -174,6 +177,12 @@ def main(args):
         checkpoint = torch.load(args.finetune, map_location='cpu')
         print("Load pre-trained checkpoint from: %s" % args.finetune)
         checkpoint_model = checkpoint['model'] if "model" in checkpoint.keys() else checkpoint['model_state']
+
+        # Interpolate positional embeddings before filtering
+        if 'pos_embed' in checkpoint_model:
+            interpolate_pos_embed(model, checkpoint_model)
+        if 'decoder_pos_embed' in checkpoint_model:
+            interpolate_decoder_pos_embed(model, checkpoint_model)
 
         # Filter out keys that do not match in shape
         model_dict = model.state_dict()

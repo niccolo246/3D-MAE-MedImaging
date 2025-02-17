@@ -319,21 +319,41 @@ def vit_large_patch16_reg(**kwargs):
 #
 #################################
 
+"""model = vit_large_patch16_yo(img_size=96, num_classes=1, global_pool=True)
+
+weight_path = '/Users/niccolo/Documents/UCL/TANGERINE/weights/checkpoint-399.pth'
+
+
+if True:
+    checkpoint = torch.load(weight_path, map_location='cpu')
+    print("Load pre-trained checkpoint from: %s" % weight_path)
+    checkpoint_model = checkpoint['model'] if "model" in checkpoint.keys() else checkpoint['model_state']
+
+    if 'pos_embed' in checkpoint_model:
+        interpolate_pos_embed(model, checkpoint_model)
+
+    # Filter out keys that do not match in shape
+    model_dict = model.state_dict()
+    filtered_checkpoint = {k: v for k, v in checkpoint_model.items() if k in model_dict and model_dict[k].shape == v.shape}
+
+    # Load the filtered checkpoint into the model
+    msg = model.load_state_dict(filtered_checkpoint, strict=False)
+    print(msg)
+
 
 # Create the model instance
-#model = vit_large_patch16_yo(img_size=96, num_classes=1, global_pool=True)
 
 # Define an input tensor with shape (1,1,96,96,96)
-#input_tensor = torch.randn(1, 1, 96, 96, 96)
+input_tensor = torch.randn(1, 1, 96, 96, 96)
 
 # Forward pass
-#output = model(input_tensor)
+output = model(input_tensor)
 
 # Print output shape
-#print(f"Input size: {input_tensor.shape}")
-#print(f"Output size: {output.shape}")
+print(f"Input size: {input_tensor.shape}")
+print(f"Output size: {output.shape}")
 
 
 
 
-
+"""

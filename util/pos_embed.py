@@ -11,6 +11,9 @@ import numpy as np
 
 import torch
 
+import torch.nn.functional as F
+
+
 # --------------------------------------------------------
 # 2D sine-cosine position embedding
 # References:
@@ -113,32 +116,97 @@ def get_2d_sincos_pos_embed_from_grid(embed_dim, grid):
     return emb
 
 
-
-
-# --------------------------------------------------------
-# Interpolate position embeddings for high-resolution
-# References:
-# DeiT: https://github.com/facebookresearch/deit
-# --------------------------------------------------------
 def interpolate_pos_embed(model, checkpoint_model):
+    """Interpolate positional embeddings when loading a pre-trained model with a different input size in 3D ViTs."""
     if 'pos_embed' in checkpoint_model:
         pos_embed_checkpoint = checkpoint_model['pos_embed']
-        embedding_size = pos_embed_checkpoint.shape[-1]
-        num_patches = model.patch_embed.num_patches
-        num_extra_tokens = model.pos_embed.shape[-2] - num_patches
-        # height (== width) for the checkpoint position embedding
-        orig_size = int((pos_embed_checkpoint.shape[-2] - num_extra_tokens) ** 0.5)
-        # height (== width) for the new position embedding
-        new_size = int(num_patches ** 0.5)
-        # class_token and dist_token are kept unchanged
-        if orig_size != new_size:
-            print("Position interpolate from %dx%d to %dx%d" % (orig_size, orig_size, new_size, new_size))
+        embedding_size = pos_embed_checkpoint.shape[-1]  # Hidden dimension
+        num_patches = model.patch_embed.num_patches  # New number of patches
+        num_extra_tokens = model.pos_embed.shape[-2] - num_patches  # Extra tokens (CLS, etc.)
+
+        # Compute original and new patch grid sizes
+        num_patches_old = pos_embed_checkpoint.shape[1] - num_extra_tokens  # Old number of patches
+        num_patches_new = num_patches  # New number of patches
+
+        # Infer original patch grid dimensions
+        orig_d = int(round(num_patches_old ** (1 / 3)))
+        orig_h = orig_d
+        orig_w = orig_d
+
+        # Infer new patch grid dimensions
+        new_d = int(round(num_patches_new ** (1 / 3)))
+        new_h = new_d
+        new_w = new_d
+
+        if orig_d * orig_h * orig_w != num_patches_old or new_d * new_h * new_w != num_patches_new:
+            raise ValueError(
+                f"Patch embedding count mismatch! Old: {num_patches_old}, New: {num_patches_new}. "
+                f"Check your patching setup."
+            )
+
+        if (orig_d, orig_h, orig_w) != (new_d, new_h, new_w):
+            print(f"Interpolating position embedding from {orig_d}x{orig_h}x{orig_w} to {new_d}x{new_h}x{new_w}")
+
+            # Extract extra tokens (CLS, distillation, etc.)
             extra_tokens = pos_embed_checkpoint[:, :num_extra_tokens]
-            # only the position tokens are interpolated
+
+            # Reshape into (D, H, W, Embedding)
             pos_tokens = pos_embed_checkpoint[:, num_extra_tokens:]
-            pos_tokens = pos_tokens.reshape(-1, orig_size, orig_size, embedding_size).permute(0, 3, 1, 2)
-            pos_tokens = torch.nn.functional.interpolate(
-                pos_tokens, size=(new_size, new_size), mode='bicubic', align_corners=False)
-            pos_tokens = pos_tokens.permute(0, 2, 3, 1).flatten(1, 2)
+            pos_tokens = pos_tokens.reshape(1, orig_d, orig_h, orig_w, embedding_size).permute(0, 4, 1, 2, 3)
+
+            # Perform 3D interpolation
+            pos_tokens = F.interpolate(pos_tokens, size=(new_d, new_h, new_w), mode='trilinear', align_corners=False)
+
+            # Reshape back
+            pos_tokens = pos_tokens.permute(0, 2, 3, 4, 1).reshape(1, new_d * new_h * new_w, embedding_size)
+
+            # Concatenate extra tokens back
             new_pos_embed = torch.cat((extra_tokens, pos_tokens), dim=1)
             checkpoint_model['pos_embed'] = new_pos_embed
+
+            print(f"Positional embeddings interpolated successfully. New shape: {new_pos_embed.shape}")
+
+
+def interpolate_decoder_pos_embed(model, checkpoint_model):
+    """Interpolate the decoder positional embeddings for MAE if the input size changes."""
+    if 'decoder_pos_embed' in checkpoint_model:
+        dec_pos_embed_checkpoint = checkpoint_model['decoder_pos_embed']
+        embedding_size = dec_pos_embed_checkpoint.shape[-1]
+
+        # The new model's decoder_pos_embed
+        dec_pos_embed_model = model.decoder_pos_embed
+        num_patches_dec = dec_pos_embed_model.shape[-2]  # new patch count + any extra tokens
+        num_extra_tokens = dec_pos_embed_model.shape[-2] - model.patch_embed.num_patches
+
+        # old patch count
+        num_patches_old = dec_pos_embed_checkpoint.shape[1] - num_extra_tokens
+
+        # For simplicity, assume cubic patches (if truly 3D).
+        orig_size = int(round(num_patches_old ** (1 / 3)))
+        new_size = int(round(model.patch_embed.num_patches ** (1 / 3)))
+
+        if orig_size != new_size:
+            print(f"Interpolating DECODER pos_embed from {orig_size}x{orig_size}x{orig_size} to {new_size}x{new_size}x{new_size}")
+
+            # Extra tokens (CLS, etc.) in the decoder
+            extra_tokens = dec_pos_embed_checkpoint[:, :num_extra_tokens]
+            dec_pos_tokens = dec_pos_embed_checkpoint[:, num_extra_tokens:]
+
+            # Reshape for 3D trilinear interpolation
+            dec_pos_tokens = dec_pos_tokens.reshape(
+                1, orig_size, orig_size, orig_size, embedding_size
+            ).permute(0, 4, 1, 2, 3)
+
+            dec_pos_tokens = F.interpolate(
+                dec_pos_tokens,
+                size=(new_size, new_size, new_size),
+                mode='trilinear',
+                align_corners=False
+            )
+            dec_pos_tokens = dec_pos_tokens.permute(0, 2, 3, 4, 1).reshape(
+                1, new_size**3, embedding_size
+            )
+
+            # Concatenate the extra tokens back
+            new_dec_pos_embed = torch.cat((extra_tokens, dec_pos_tokens), dim=1)
+            checkpoint_model['decoder_pos_embed'] = new_dec_pos_embed
