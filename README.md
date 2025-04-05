@@ -164,21 +164,13 @@ This project is licensed under the **CC-BY-NC 4.0** license.
 If you use this repository in academic work, please cite:
 
 ```
-@article{your_paper,
-  author  = {Your Name et al.},
-  title   = {3D Masked Autoencoders for Volumetric Data},
-  journal = {Journal Name},
-  year    = {2025},
-  volume  = {XX},
-  pages   = {XX-XX},
-  doi     = {DOI}
-}
+Pending
 ```
 
 ---
 
 ## Contact
 
-For questions or contributions, please contact **your_email@example.com** or open an issue on GitHub.
+For questions or contributions, please contact **niccolo.mcconnell.17@ucl.ac.uk** or open an issue on GitHub.
 
 
