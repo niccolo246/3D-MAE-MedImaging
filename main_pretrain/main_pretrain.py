@@ -48,7 +48,7 @@ def get_args_parser():
                         help='Accumulate gradient iterations (for increasing the effective batch size under memory constraints)')
 
     # Model parameters
-    parser.add_argument('--model', default='mae_vit_large_patch16_reconstruct', type=str, metavar='MODEL',
+    parser.add_argument('--model', default='mae_vit_large_patch16_dec512d8b', type=str, metavar='MODEL',
                         help='Name of model to train')
     parser.add_argument('--input_size', default=256, type=int,
                         help='images input size')

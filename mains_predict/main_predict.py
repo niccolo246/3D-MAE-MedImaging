@@ -44,7 +44,7 @@ def get_args_parser():
     # Dataset / CSV parameters
     parser.add_argument('--input_csv', default='/code/example_inputs/example_data_finetune.csv', type=str,
                         help='Path to input CSV with dataset information')
-    parser.add_argument('--output_csv', default='/data/output_dir', type=str,
+    parser.add_argument('--output_csv', default='/results/example_data_out.csv', type=str,
                         help='Path to output CSV for predictions')
     parser.add_argument('--nb_classes', default=1, type=int,
                         help='Number of classes')
@@ -70,9 +70,11 @@ def get_args_parser():
 
     # Distributed training parameters (if needed)
     parser.add_argument('--world_size', default=1, type=int,
-                        help='Number of distributed processes')
+                        help='number of distributed processes')
     parser.add_argument('--local_rank', default=-1, type=int)
-    parser.add_argument('--dist_url', default='env://', help='URL used to set up distributed training')
+    parser.add_argument('--dist_on_itp', action='store_true')
+    parser.add_argument('--dist_url', default='env://',
+                        help='url used to set up distributed training')
 
     return parser
 
@@ -111,10 +113,13 @@ def main(args):
     )
 
     # Load pre-trained checkpoint
-    checkpoint_model = torch.load(args.finetune, map_location='cpu')
-    print("Loading checkpoint from:", args.finetune)
-    msg = model.load_state_dict(checkpoint_model, strict=False)
-    print(msg)
+    if args.finetune is None:
+        print(f"Checkpoint not found at {args.finetune}. Skipping weight loading.")
+    else:
+        if os.path.exists(args.finetune):
+            checkpoint_model = torch.load(args.finetune, map_location='cpu')
+            msg = model.load_state_dict(checkpoint_model, strict=False)
+            print(msg)
 
     model.to(device)
     model_without_ddp = model
@@ -168,8 +173,6 @@ def main(args):
 
 if __name__ == '__main__':
     args = get_args_parser().parse_args()
-    if args.output_dir:
-        Path(args.output_dir).mkdir(parents=True, exist_ok=True)
     main(args)
 
 

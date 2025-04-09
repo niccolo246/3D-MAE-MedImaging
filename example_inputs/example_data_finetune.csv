@@ -1,4 +1,4 @@
 Path,Label
-/path/to/volume1.nii.gz,1
-/path/to/volume2.nii.gz,0
+/code/example_inputs/noise_vols/volume_1.nii.gz,1
+/code/example_inputs/noise_vols/volume_2.nii.gz,0
 

@@ -145,6 +145,8 @@ Modify this function as needed to fit specific dataset characteristics.
 We provide **TANGERINE pretrained ViT-Large weights** for both the **encoder** and **decoder**, available at the following link:
 
 Coming soon...
+[Download via Google Drive](https://drive.google.com/drive/folders/1hESpODUMGY5572jDuZBB2QHiOf0ac5tO?usp=share_link)
+
 
 These weights can be directly used for **finetuning** across a wide range of downstream tasks, including **classification**, **segmentation**, and **detection**.
 
