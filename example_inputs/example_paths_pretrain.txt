@@ -1,0 +1,2 @@
+/path/to/volume1.nii.gz
+/path/to/volume2.nii.gz
