@@ -1,3 +1,20 @@
+---
+license: cc-by-nc-4.0
+tags:
+  - medical-imaging
+  - 3d-transformer
+  - masked-autoencoder
+  - vit
+  - chest-ct
+  - self-supervised-learning
+datasets:
+  - custom-private
+pipeline_tag: feature-extraction
+library_name: pytorch
+model-index:
+  - name: TANGERINE (ViT-Large)
+---
+
 # Model Card: TANGERINE (ViT-Large for 3D Medical Imaging)
 
 ## Model Overview
@@ -25,28 +42,8 @@ TANGERINE is a 3D Vision Transformer (ViT-Large) model pretrained using a self-s
   - The **encoder** weights are intended for **downstream tasks** such as classification, segmentation, and detection.
   - The **decoder** is included for completeness but is **not required** for finetuning or inference on downstream tasks.
 
-
 ## Citation
 TBD – please cite our paper if you use this model.
 
 ## Contact
 Questions or issues? Contact [niccolo.mcconnell.17@ucl.ac.uk](mailto:niccolo.mcconnell.17@ucl.ac.uk)
-
---
-
-license: cc-by-nc-4.0
-tags:
-  - medical-imaging
-  - 3d-transformer
-  - masked-autoencoder
-  - vit
-  - chest-ct
-  - self-supervised-learning
-datasets:
-  - custom-private
-pipeline_tag: feature-extraction
-library_name: pytorch
-model-index:
-  - name: TANGERINE (ViT-Large)
-
---
