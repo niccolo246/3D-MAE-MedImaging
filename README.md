@@ -142,16 +142,17 @@ Modify this function as needed to fit specific dataset characteristics.
 
 ## Pretrained Model Weights
 
-We provide **TANGERINE pretrained ViT Large weights** for both the **encoder** and **decoder**, available at:  
-**[URL_LINK]** *(to be provided)*  
+We provide **TANGERINE pretrained ViT-Large weights** for both the **encoder** and **decoder**, available at the following link:
 
-These weights can be **directly used for finetuning** across a wide range of downstream **classification, segmentation, and detection** tasks.
+[Download via Google Drive](https://drive.google.com/drive/folders/1ZsX1oh4Y6_AMCAUay5ngJ_4asrCrKIsQ?usp=share_link)
 
-Example usage:
+These weights can be directly used for **finetuning** across a wide range of downstream tasks, including **classification**, **segmentation**, and **detection**.
+
+### Example usage
 
 ```bash
 torchrun --standalone --nproc_per_node=4 --nnodes=1 --master_port=$MASTER_PORT path/to/main_finetune.py \
-    --finetune path/pretrained_checkpoint.pth \
+    --finetune path/to/pretrained_checkpoint.pth \
     --additional_finetune_args
 ```
 
