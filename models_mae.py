@@ -371,18 +371,3 @@ mae_vit_huge_patch14 = mae_vit_huge_patch14_dec512d8b  # decoder: 512 dim, 8 blo
 
 
 
-
-###########################################
-#
-#
-# Reconstruction:
-#
-#
-
-def mae_vit_large_patch16_reconstruct(**kwargs):
-    model = MaskedAutoencoderViT(img_size=96, in_chans=1,
-        patch_size=16, embed_dim=1024, depth=24, num_heads=16,
-        decoder_embed_dim=512, decoder_depth=8, decoder_num_heads=16,
-        mlp_ratio=4, norm_layer=partial(nn.LayerNorm, eps=1e-6), **kwargs)
-    return model
-
