@@ -1,20 +1,3 @@
----
-license: cc-by-nc-4.0
-tags:
-  - medical-imaging
-  - 3d-transformer
-  - masked-autoencoder
-  - vit
-  - chest-ct
-  - self-supervised-learning
-datasets:
-  - custom-private
-pipeline_tag: feature-extraction
-library_name: pytorch
-model-index:
-  - name: TANGERINE (ViT-Large)
----
-
 # Model Card: TANGERINE (ViT-Large for 3D Medical Imaging)
 
 ## Model Overview
@@ -47,3 +30,20 @@ TBD – please cite our paper if you use this model.
 
 ## Contact
 Questions or issues? Contact [niccolo.mcconnell.17@ucl.ac.uk](mailto:niccolo.mcconnell.17@ucl.ac.uk)
+
+```
+license: cc-by-nc-4.0
+tags:
+  - medical-imaging
+  - 3d-transformer
+  - masked-autoencoder
+  - vit
+  - chest-ct
+  - self-supervised-learning
+datasets:
+  - custom-private
+pipeline_tag: feature-extraction
+library_name: pytorch
+model-index:
+  - name: TANGERINE (ViT-Large)
+```
