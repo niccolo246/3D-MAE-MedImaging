@@ -26,7 +26,7 @@ def get_args_parser():
         'MAE fine-tuning prediction for image classification', add_help=False)
 
     # Model parameters
-    parser.add_argument('--model', default='vit_large_patch16_power_3_yo', type=str,
+    parser.add_argument('--model', default='vit_large_patch16_yo', type=str,
                         metavar='MODEL', help='Name of model to load')
     parser.add_argument('--input_size', default=256, type=int,
                         help='Image input size')
@@ -34,7 +34,7 @@ def get_args_parser():
                         help='Drop path rate')
 
     # Finetuning parameter
-    parser.add_argument('--finetune', default='/path/to/best_model_loss.pth',
+    parser.add_argument('--finetune', default=None,
                         help='Path to pre-trained checkpoint')
     parser.add_argument('--global_pool', action='store_true')
     parser.set_defaults(global_pool=True)
@@ -42,9 +42,9 @@ def get_args_parser():
                         help='Use class token instead of global pool')
 
     # Dataset / CSV parameters
-    parser.add_argument('--input_csv', default='/path/to/input.csv', type=str,
+    parser.add_argument('--input_csv', default='/code/example_inputs/example_data_finetune.csv', type=str,
                         help='Path to input CSV with dataset information')
-    parser.add_argument('--output_csv', default='/path/to/output_predictions.csv', type=str,
+    parser.add_argument('--output_csv', default='/data/output_dir', type=str,
                         help='Path to output CSV for predictions')
     parser.add_argument('--nb_classes', default=1, type=int,
                         help='Number of classes')
