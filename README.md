@@ -1,6 +1,9 @@
-# 3D Masked Autoencoders for Volumetric Data
+# 3D Masked Autoencoders for Volumetric Medical Imaging Data
 
 This repository provides a **3D extension of the Masked Autoencoder (MAE) framework**, designed for self-supervised pretraining on **volumetric medical imaging data** (e.g., CT scans). Our method extends MAE to 3D by incorporating **custom volumetric patch embedding** and **Transformer-based feature learning**, enabling efficient representation learning for medical imaging applications.
+
+As part of this framework, we introduce **TANGERINE** (*Thoracic Autoencoder Network Generating Embeddings for Radiological Interpretation for Numerous End-tasks*), a **ViT-Large model pretrained on 98,000 chest CT volumes** for lung screening. TANGERINE demonstrates the effectiveness of this framework and is described in detail in our paper (citation below). We provide the **pretrained encoder and decoder weights**, which can be used to initialize downstream fine-tuning for a variety of downstream tasks.
+
 
 ## Key Features
 
