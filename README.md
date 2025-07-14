@@ -32,8 +32,8 @@ To use this repository, install the necessary dependencies and set up the enviro
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your_username/3D-MAE.git
-   cd 3D-MAE
+   git clone https://github.com/niccolo246/3D-MAE-MedImaging
+   cd 3D-MAE-MedImaging
    ```
 
 2. **Install dependencies:**  
