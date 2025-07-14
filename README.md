@@ -2,7 +2,7 @@
 
 This repository provides a **3D extension of the Masked Autoencoder (MAE) framework**, designed for self-supervised pretraining on **volumetric medical imaging data** (e.g., CT scans). Our method extends MAE to 3D by incorporating **custom volumetric patch embedding** and **Transformer-based feature learning**, enabling efficient representation learning for medical imaging applications.
 
-As part of this framework, we introduce **TANGERINE** (*Thoracic Autoencoder Network Generating Embeddings for Radiological Interpretation for Numerous End-tasks*), a **ViT-Large model pretrained on 98,000 chest CT volumes** for lung screening. TANGERINE demonstrates the effectiveness of this framework and is described in detail in our paper (citation below). We provide the **pretrained encoder and decoder weights**, which can be used to initialize downstream fine-tuning for a variety of downstream tasks.
+As part of this framework, we introduce **TANGERINE** (*Thoracic Autoencoder Network Generating Embeddings for Radiological Interpretation for Numerous End-tasks*), a **ViT-Large model pretrained on 98,000 chest CT volumes** for lung screening. TANGERINE demonstrates the effectiveness of this framework and is described in detail in our paper (citation below). We provide the **pretrained encoder and decoder weights**, which can be used to initialize fine-tuning for a variety of downstream tasks.
 
 
 ## Key Features
@@ -16,8 +16,8 @@ As part of this framework, we introduce **TANGERINE** (*Thoracic Autoencoder Net
   - Enables **scalable training on large-scale 3D datasets**.  
 
 - **Pretrained ViT Large Model**  
-  - We pretrained TANGERINE (Thoracic Autoencoder Network Generating Embeddings for Radiological Interpretation for Numerous End-tasks), a **ViT-Large** model on **98,000 Chest CT volumes**, as described in our paper.  
-  - Pretrained TANGERINE **encoder and decoder weights** are available at: [URL_LINK] *(to be provided)*  
+  - TANGERINE, our pretrained ViT-Large model, was trained on 98,000 chest CT volumes for thoracic screening, as detailed in our paper.  
+  - Pretrained TANGERINE **encoder and decoder weights** are available at: [URL_LINK] *(coming soon)*  
   - This pretrained model can be **readily finetuned** for a wide range of **downstream tasks**.
 
 - **Flexible Finetuning and Inference**  
