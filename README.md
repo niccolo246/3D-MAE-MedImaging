@@ -17,7 +17,7 @@ As part of this framework, we introduce **TANGERINE** (*Thoracic Autoencoder Net
 
 - **Pretrained ViT Large Model**  
   - TANGERINE, our pretrained ViT-Large model, was trained on 98,000 chest CT volumes for thoracic screening, as detailed in our paper.  
-  - Pretrained TANGERINE **encoder and decoder weights** are available at: [Full_access_URL_LINK_comin_soon](https://drive.google.com/drive/folders/1hESpODUMGY5572jDuZBB2QHiOf0ac5tO?usp=share_link)  
+  - Pretrained TANGERINE **encoder and decoder weights** are available at: [Full access URL LINK coming soon](https://drive.google.com/drive/folders/1hESpODUMGY5572jDuZBB2QHiOf0ac5tO?usp=share_link)  
   - This pretrained model can be **readily finetuned** for a wide range of **downstream tasks**.
 
 - **Flexible Finetuning and Inference**  
@@ -148,7 +148,7 @@ Modify this function as needed to fit specific dataset characteristics.
 We provide **TANGERINE pretrained ViT-Large weights** for both the **encoder** and **decoder**, available at the following link:
 
 Coming soon...
-[Full_access_URL_LINK_comin_soon](https://drive.google.com/drive/folders/1hESpODUMGY5572jDuZBB2QHiOf0ac5tO?usp=share_link)
+[Full access URL LINK coming soon](https://drive.google.com/drive/folders/1hESpODUMGY5572jDuZBB2QHiOf0ac5tO?usp=share_link)
 
 
 These weights can be directly used for **finetuning** across a wide range of downstream tasks, including **classification**, **segmentation**, and **detection**.
