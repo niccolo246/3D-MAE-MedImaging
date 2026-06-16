@@ -2,9 +2,7 @@
 """Extract encoder embeddings from the 3D-MAE ViT model.
 
 This is a prediction-style utility for exporting representations rather than
-classification probabilities. It supports the current NIfTI CSV format used by
-``mains_predict/main_predict.py`` and the older NPZ-volume CSVs used in the ILA
-embedding scripts.
+classification probabilities. 
 """
 
 import argparse
